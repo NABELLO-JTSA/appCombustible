@@ -1,0 +1,52 @@
+<div class="container">
+
+    <div class="text-center">
+
+        <div class="row">
+            <div class="col col-lg-6 mr-auto ">
+
+                <p>Bienvenidos a <strong style="color:#7FBA27;">Sistemas Jorquera</strong></p>
+                <app-loading *ngIf="loading"></app-loading>
+            </div>
+
+
+            <div class="col col-lg-5">
+
+                <form [formGroup]="recuperarPass" (ngSubmit)=log()>
+                    <div class="form-group">
+                        <img src="../../../../assets/img/logoJ.png" alt="">
+                    </div>
+
+                    <div class="form-group" style="text-align: start;">
+                        <input type="text" class="form-control" placeholder="RUT" formControlName="rut">
+                        <span class="text-danger" *ngIf="recuperarPass.controls['rut'].hasError('required') && recuperarPass.controls['rut'].touched">Ingrese RUT</span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-6"> <button class="btn btn-success btn-login btn-block " [disabled]="recuperarPass.invalid" type="submit">Recuperar</button></div>
+                            <div class="col-lg-6"> <button class="btn btn-secondary btn-block" routerLink="../">Volver</button></div>
+
+                        </div>
+
+
+
+
+                    </div>
+
+                    <div class="form-group">
+                        <h6>
+                            <fa-icon style="color: white;" [icon]="faPhone"></fa-icon> +569 12345674
+                        </h6>
+                        <h6>
+                            <fa-icon style="color: white;" [icon]="faMailBulk"></fa-icon> JORQUERA@JTSA.CL</h6>
+                    </div>
+
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
