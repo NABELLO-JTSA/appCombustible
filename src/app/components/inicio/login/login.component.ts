@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { faPhone } from '@fortawesome/free-solid-svg-icons';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { ToastrService } from 'ngx-toastr';
+import { LoginService } from 'src/app/services/login.service';
 import { Usuario } from '../../../models/usuario' // exportando la clase en caprtea models
 
 
@@ -20,38 +21,42 @@ export class LoginComponent implements OnInit {
 
   loading = false;
 
-  constructor(private fb: FormBuilder, private toastr: ToastrService, private router: Router) {
+  constructor(private fb: FormBuilder, private toastr: ToastrService, private router: Router, private loginService: LoginService) {
     this.login = this.fb.group({
       usuario: ['', Validators.required],
       password: ['', Validators.required]
     })
    }
 
-  ngOnInit(): void {
-    
+  ngOnInit(): void {    
   }
 
-  log(): void{
-    
+  log(): void{    
     const usuario: Usuario = {
-      nombreUsuario: this.login.value.usuario,
-      password: this.login.value.password    
-    }
+      abrev_usuario: this.login.value.usuario,
+      nom_usuario:'',
+      password: this.login.value.password,
+      mail: '',
+      fec_add: new Date(),
+      est_activo: 1,
+      est_primer_ingreso: 1,
+      num_intentos: 0,     
+    };
 
     this.loading = true;
 
-    setTimeout(() => {
-      if(usuario.nombreUsuario === 'nabello' && usuario.password ==="1234"){
-        this.router.navigate(['/menu']);
-        this.login.reset();
-      }else{
-        this.toastr.error('Datos incorrectos', 'Error')
-        this.login.reset();
-      }
+    this.loginService.login(usuario).subscribe(data =>{
+      console.log(data);
+      this.loading=false;
+      this.loginService.setLocalStorage(data.usuario); // guardar variables generales
+      this.router.navigate(['/menu']);
+    }, error =>{
+      console.log(error);
       this.loading = false;
-    
-    }, 1000);
+      this.toastr.error(error.error.message, 'Error');
+      this.login.reset();
+    });
 
   }
-
 }
+
